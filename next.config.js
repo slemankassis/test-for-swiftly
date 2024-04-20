@@ -4,20 +4,9 @@ const nextConfig = {
   style: {
     postcss: {
       plugins: {
-        tailwindcss: {},
         autoprefixer: {},
       },
     },
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: '"avatars.githubusercontent.com',
-        port: "",
-        pathname: "/**",
-      },
-    ],
   },
 };
 

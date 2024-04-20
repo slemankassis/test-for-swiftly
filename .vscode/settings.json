@@ -1,42 +1,31 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#b17536",
-    "activityBar.background": "#b17536",
+    "activityBar.activeBackground": "#ff3333",
+    "activityBar.background": "#ff3333",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",
-    "activityBarBadge.background": "#6cd2a1",
+    "activityBarBadge.background": "#00df00",
     "activityBarBadge.foreground": "#15202b",
     "commandCenter.border": "#e7e7e799",
-    "sash.hoverBorder": "#b17536",
-    "statusBar.background": "#8a5b2a",
+    "sash.hoverBorder": "#ff3333",
+    "statusBar.background": "#ff0000",
     "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#b17536",
-    "statusBarItem.remoteBackground": "#8a5b2a",
+    "statusBarItem.hoverBackground": "#ff3333",
+    "statusBarItem.remoteBackground": "#ff0000",
     "statusBarItem.remoteForeground": "#e7e7e7",
-    "titleBar.activeBackground": "#8a5b2a",
+    "titleBar.activeBackground": "#ff0000",
     "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#8a5b2a99",
+    "titleBar.inactiveBackground": "#ff000099",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "8A5B2A",
+  "peacock.color": "red",
   "restoreTerminals.runOnStartup": false,
   "restoreTerminals.terminals": [
     {
       "splitTerminals": [
         {
-          "commands": ["nvm use 18.17.0; npm i; npm run dev"]
+          "commands": ["nvm use; npm i ; npm run dev"]
         }
-        // {
-        //   "commands": [
-        //     "cd ../server; git pull; nvm install 14.16.1; yarn; docker-compose up -d; yarn start"
-        //   ]
-        // }
-        // {
-        //   "commands": ["zsh", "yarn open-cypress-old"]
-        // }
-        // {
-        //   "commands": ["git merge blaze/master"]
-        // }
       ]
     }
   ]

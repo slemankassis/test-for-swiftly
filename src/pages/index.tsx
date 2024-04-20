@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Grid, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 
@@ -38,12 +38,18 @@ export default function Home() {
     fetchCharacters();
   }, []);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value.toLowerCase();
+    setSearch(searchTerm);
+  }, []);
 
-  const filteredCharacters = characters.filter((character) =>
-    character.name.toLowerCase().includes(search.toLowerCase())
+  const filteredCharacters = useMemo(() =>
+    characters.filter((character) =>
+      character.name.toLowerCase().includes(search.toLowerCase()) ||
+      character.homeworld.toLowerCase().includes(search.toLowerCase()) ||
+      character.species?.toLowerCase().includes(search.toLowerCase())
+    ),
+    [characters, search]
   );
 
   return (

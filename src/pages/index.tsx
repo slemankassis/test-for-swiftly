@@ -4,8 +4,8 @@ import axios from 'axios';
 
 interface Character {
   name: string;
-  homeworld: string;
-  species: string;
+  homeworld?: string;
+  species?: string;
 }
 
 export default function Home() {
@@ -38,17 +38,31 @@ export default function Home() {
     fetchCharacters();
   }, []);
 
-  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = event.target.value.toLowerCase();
-    setSearch(searchTerm);
-  }, []);
+  const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
 
-  const filteredCharacters = useMemo(() =>
-    characters.filter((character) =>
-      character.name.toLowerCase().includes(search.toLowerCase()) ||
-      character.homeworld.toLowerCase().includes(search.toLowerCase()) ||
-      character.species?.toLowerCase().includes(search.toLowerCase())
-    ),
+  const handleSearchChange = useCallback(
+    debounce((searchTerm: string) => {
+      setSearch(searchTerm);
+    }, 300),
+    []
+  );
+
+  const filteredCharacters = useMemo(
+    () =>
+      characters.filter(
+        (character) =>
+          character.name.toLowerCase().includes(search.toLowerCase()) ||
+          character.homeworld?.toLowerCase().includes(search.toLowerCase()) ||
+          character.species?.toLowerCase().includes(search.toLowerCase())
+      ),
     [characters, search]
   );
 
@@ -61,8 +75,7 @@ export default function Home() {
         label="Search"
         variant="outlined"
         fullWidth
-        value={search}
-        onChange={handleSearchChange}
+        onChange={(event) => handleSearchChange(event.target.value)}
         style={{ marginBottom: '20px' }}
       />
       {filteredCharacters.length === 0 ? (
@@ -74,8 +87,8 @@ export default function Home() {
           {filteredCharacters.map((character, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Typography variant="h5">{character.name}</Typography>
-              <Typography variant="body1">Homeworld: {character.homeworld}</Typography>
-              <Typography variant="body1">Species: {character.species}</Typography>
+              {character.homeworld && <Typography variant="body1">Homeworld: {character.homeworld}</Typography>}
+              {character.species && <Typography variant="body1">Species: {character.species}</Typography>}
             </Grid>
           ))}
         </Grid>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, TextField, Typography, Card, CardContent } from '@mui/material';
 import axios from 'axios';
 
 interface Character {
@@ -86,9 +86,15 @@ export default function Home() {
         <Grid container spacing={3}>
           {filteredCharacters.map((character, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <Typography variant="h5">{character.name}</Typography>
-              {character.homeworld && <Typography variant="body1">Homeworld: {character.homeworld}</Typography>}
-              {character.species && <Typography variant="body1">Species: {character.species}</Typography>}
+              <Card style={{ backgroundColor: '#f0f0f0', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                <CardContent>
+                  <Typography variant="h5">{character.name}</Typography>
+                  {character.homeworld && (
+                    <Typography variant="body1">Homeworld: {character.homeworld}</Typography>
+                  )}
+                  {character.species && <Typography variant="body1">Species: {character.species}</Typography>}
+                </CardContent>
+              </Card>
             </Grid>
           ))}
         </Grid>

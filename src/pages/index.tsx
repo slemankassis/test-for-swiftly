@@ -6,7 +6,7 @@ import useDebounce from "@/hooks/useDebounce";
 
 export default function Home() {
   const [search, setSearch] = useState<string>("");
-  const characters = useCharacters();
+  const { characters } = useCharacters();
   const debounce = useDebounce(setSearch, 300);
 
   const handleSearchChange = useCallback(
@@ -22,7 +22,10 @@ export default function Home() {
         (character) =>
           character.name.toLowerCase().includes(search.toLowerCase()) ||
           character.homeworld?.toLowerCase().includes(search.toLowerCase()) ||
-          character.species?.toLowerCase().includes(search.toLowerCase())
+          (character.species &&
+            character.species.some((specie) =>
+              specie.toLowerCase().includes(search.toLowerCase())
+            ))
       ),
     [characters, search]
   );

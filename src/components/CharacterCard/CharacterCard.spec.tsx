@@ -5,7 +5,7 @@ import Character from "@/types/Character";
 const mockCharacter: Character = {
   name: "Luke Skywalker",
   homeworld: "Tatooine",
-  species: "Human",
+  species: ["Human", "Jedi"],
 };
 
 describe("CharacterCard", () => {
@@ -21,7 +21,8 @@ describe("CharacterCard", () => {
 
   test("renders species if provided", () => {
     const { getByText } = render(<CharacterCard character={mockCharacter} />);
-    expect(getByText(`Species: ${mockCharacter.species}`)).toBeDefined();
+    expect(getByText(`${mockCharacter.species?.[0]}`)).toBeDefined();
+    expect(getByText(`${mockCharacter.species?.[1]}`)).toBeDefined();
   });
 
   test("does not render homeworld if not provided", () => {

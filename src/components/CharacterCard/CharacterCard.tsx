@@ -22,9 +22,12 @@ const CharacterCard = ({ character }: { character: Character }) => {
                 Homeworld: {character.homeworld}
               </Typography>
             )}
-            {character.species && (
+            {!!character.species?.length && (
               <Typography variant="body1" component="span">
-                Species: {character.species}
+                Species:
+                {character.species?.map((specie) => (
+                  <span key={specie}> {specie}</span>
+                ))}
               </Typography>
             )}
           </Box>

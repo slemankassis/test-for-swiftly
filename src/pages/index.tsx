@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import { TextField, Typography, List, Container } from "@mui/material";
-import CharacterCard from "@/components/CaracterCard";
+import CharacterCard from "@/components/CharacterCard/CharacterCard";
 import useCharacters from "@/hooks/useCharacters";
 import useDebounce from "@/hooks/useDebounce";
 

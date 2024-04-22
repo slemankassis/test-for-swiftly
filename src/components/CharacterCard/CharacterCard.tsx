@@ -1,4 +1,4 @@
-import { Typography, ListItem, ListItemText } from "@mui/material";
+import { Typography, ListItem, ListItemText, Box } from "@mui/material";
 import Character from "@/types/Character";
 
 const CharacterCard = ({ character }: { character: Character }) => {
@@ -15,18 +15,18 @@ const CharacterCard = ({ character }: { character: Character }) => {
       <ListItemText
         primary={character.name}
         secondary={
-          <>
+          <Box display="flex" flexDirection="column">
             {character.homeworld && (
-              <Typography variant="body1">
+              <Typography variant="body1" component="span">
                 Homeworld: {character.homeworld}
               </Typography>
             )}
             {character.species && (
-              <Typography variant="body1">
+              <Typography variant="body1" component="span">
                 Species: {character.species}
               </Typography>
             )}
-          </>
+          </Box>
         }
       />
     </ListItem>

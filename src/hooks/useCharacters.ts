@@ -8,9 +8,9 @@ const useCharacters = () => {
   const fetchCharacters = async () => {
     try {
       const response = await axios.get(
-        "https://swapi.dev/api/people/?format=json"
+        `${process.env.NEXT_PUBLIC_API_URL}people`
       );
-      const characterData = response.data.results;
+      const characterData = response.data;
 
       const characterPromises = characterData.map(async (character: any) => {
         const homeworldResponse = await axios.get(character.homeworld);

@@ -14,6 +14,7 @@ const CharacterCard = ({ character }: { character: Character }) => {
     >
       <ListItemText
         primary={character.name}
+        disableTypography
         secondary={
           <Box display="flex" flexDirection="column">
             {character.homeworld && (

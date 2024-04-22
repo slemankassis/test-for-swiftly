@@ -31,16 +31,20 @@ const useCharacters = () => {
       );
       const characterData = response.data;
 
-      const characterPromises = characterData.map(async (character: any) => {
-        const homeworld = await fetchData([character.homeworld]);
-        const species = await fetchData(character.species);
+      const characterPromises = characterData.map(
+        async (character: Partial<Character>) => {
+          const homeworld =
+            character.homeworld && (await fetchData([character.homeworld]));
+          const species =
+            character.species && (await fetchData(character.species));
 
-        return {
-          name: character.name,
-          homeworld: homeworld?.[0],
-          species,
-        };
-      });
+          return {
+            name: character.name,
+            homeworld: homeworld?.[0],
+            species,
+          };
+        }
+      );
 
       const updatedCharacters = await Promise.all(characterPromises);
       setCharacters(updatedCharacters);

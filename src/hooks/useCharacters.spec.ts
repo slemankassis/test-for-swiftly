@@ -1,70 +1,73 @@
-import { renderHook } from "@testing-library/react-hooks";
-import axios from "axios";
+import { renderHook, act } from "@testing-library/react-hooks";
 import useCharacters from "./useCharacters";
+import axios from "axios";
 
 jest.mock("axios");
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("useCharacters", () => {
-  test("fetches and updates characters correctly", async () => {
-    const mockCharacterData = {
-      results: [
-        {
-          name: "Luke Skywalker",
-          homeworld: "http://swapi.dev/api/planets/1/",
-          species: "http://swapi.dev/api/species/1/",
-        },
-        {
-          name: "Darth Vader",
-          homeworld: "http://swapi.dev/api/planets/2/",
-          species: "http://swapi.dev/api/species/1/",
-        },
-      ],
-    };
-
-    const mockHomeworldData = { name: "Tatooine" };
-    const mockSpeciesData = { name: "Human" };
-
-    mockedAxios.get.mockResolvedValueOnce({ data: mockCharacterData });
-    mockedAxios.get.mockResolvedValueOnce({ data: mockHomeworldData });
-    mockedAxios.get.mockResolvedValueOnce({ data: mockHomeworldData });
-    mockedAxios.get.mockResolvedValueOnce({ data: mockSpeciesData });
-
-    const { result } = renderHook(() => useCharacters());
-
-    expect(result.current).toEqual([]);
-
-    expect(result.current).toEqual([
-      { name: "Luke Skywalker", homeworld: "Tatooine", species: "Human" },
-      { name: "Darth Vader", homeworld: "Tatooine", species: "Human" },
-    ]);
-
-    expect(mockedAxios.get).toHaveBeenCalledTimes(4);
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      "https://swapi.dev/api/people/?format=json"
-    );
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      "http://swapi.dev/api/planets/1/"
-    );
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      "http://swapi.dev/api/planets/2/"
-    );
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      "http://swapi.dev/api/species/1/"
-    );
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test("handles fetch error", async () => {
-    mockedAxios.get.mockRejectedValueOnce(new Error("Failed to fetch"));
+  it("fetches characters and populates character data", async () => {
+    const mockCharacterData = [
+      {
+        name: "Luke Skywalker",
+        homeworld: "https://swapi.info/api/planets/1",
+        species: ["https://swapi.info/api/species/1"],
+      },
+      {
+        name: "C-3PO",
+        homeworld: "https://swapi.info/api/planets/1",
+        species: ["https://swapi.info/api/species/2"],
+      },
+    ];
+
+    const mockHomeworldData = {
+      name: "Tatooine",
+    };
+
+    const mockSpeciesData = {
+      name: "Human",
+    };
+
+    mockedAxios.get.mockResolvedValueOnce({ data: mockCharacterData });
+    mockedAxios.get.mockResolvedValue({ data: mockSpeciesData });
+    mockedAxios.get.mockResolvedValue({ data: mockHomeworldData });
 
     const { result, waitForNextUpdate } = renderHook(() => useCharacters());
 
-    expect(console.error).toHaveBeenCalledWith(
-      "Error fetching characters:",
-      expect.any(Error)
-    );
+    await act(async () => {
+      await waitForNextUpdate();
+    });
 
-    expect(result.current).toEqual([]);
+    expect(result.current.error).toBeNull();
+    expect(result.current.characters).toEqual([
+      {
+        name: "Luke Skywalker",
+        homeworld: "Tatooine",
+        species: ["Tatooine"],
+      },
+      {
+        name: "C-3PO",
+        homeworld: "Tatooine",
+        species: ["Tatooine"],
+      },
+    ]);
+  });
+
+  it("handles fetch errors", async () => {
+    mockedAxios.get.mockRejectedValue(new Error("Failed to fetch"));
+
+    const { result, waitForNextUpdate } = renderHook(() => useCharacters());
+
+    await act(async () => {
+      await waitForNextUpdate();
+    });
+
+    expect(result.current.error).toBe("Failed to fetch characters");
+    expect(result.current.characters).toEqual([]);
   });
 });

@@ -34,6 +34,7 @@ describe("useCharacters", () => {
     };
 
     mockedAxios.get.mockResolvedValueOnce({ data: mockCharacterData });
+    // TODO fix this order
     mockedAxios.get.mockResolvedValue({ data: mockSpeciesData });
     mockedAxios.get.mockResolvedValue({ data: mockHomeworldData });
 

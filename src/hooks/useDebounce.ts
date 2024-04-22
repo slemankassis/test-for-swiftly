@@ -4,6 +4,7 @@ const useDebounce = (callback: Function, delay: number) => {
   const debounce = useCallback(
     (...args: any[]) => {
       let timeoutId: NodeJS.Timeout;
+      // TODO fix this
       // @ts-ignore
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
